@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="HandLink connecte joueurs, joueuses, entraîneurs et clubs de handball grâce à des profils sportifs, des vidéos highlights et une recherche intelligente." />
+  <title>HandLink - Le bon profil, au bon moment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --night: #07162f;
+      --night-2: #0e2346;
+      --blue: #1857c9;
+      --coral: #ff6a4a;
+      --coral-dark: #e65034;
+      --mint: #18b893;
+      --white: #ffffff;
+      --light: #f4f7fb;
+      --light-2: #e7edf6;
+      --text: #1a2638;
+      --muted: #657287;
+      --border: #dce4ef;
+      --shadow: 0 18px 48px rgba(7, 22, 47, 0.14);
+      --radius: 8px;
+      --header-height: 78px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", Arial, sans-serif;
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img,
+    svg {
+      max-width: 100%;
+      display: block;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 16px;
+      top: -48px;
+      z-index: 100;
+      padding: 10px 14px;
+      color: var(--white);
+      background: var(--night);
+      border-radius: var(--radius);
+      transition: top 180ms ease;
+    }
+
+    .skip-link:focus {
+      top: 16px;
+    }
+
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      min-height: var(--header-height);
+      background: rgba(255, 255, 255, 0.94);
+      border-bottom: 1px solid rgba(220, 228, 239, 0.92);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav-wrap {
+      min-height: var(--header-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.28rem;
+      font-weight: 800;
+      color: var(--night);
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      background: var(--night);
+      border: 2px solid var(--coral);
+      border-radius: var(--radius);
+      font-size: 0.92rem;
+      font-weight: 800;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: #29384d;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding: 8px 0;
+    }
+
+
+    .menu-toggle span::after {
+      top: 7px;
+    }
+
+    body.menu-open .menu-toggle span {
+      background: transparent;
+    }
+
+    body.menu-open .menu-toggle span::before {
+      top: 0;
+      transform: rotate(45deg);
+    }
+
+    body.menu-open .menu-toggle span::after {
+      top: 0;
+      transform: rotate(-45deg);
+    }
+
+    /* Buttons and shared utilities */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 12px 18px;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      font-size: 0.96rem;
+      font-weight: 800;
+      line-height: 1.1;
+      cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px rgba(7, 22, 47, 0.16);
+    }
+
+    .btn-primary {
+      color: var(--white);
+      background: var(--coral);
+      border-color: var(--coral);
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus-visible {
+      background: var(--coral-dark);
+      border-color: var(--coral-dark);
+    }
+
+    .btn-dark {
+      color: var(--white);
+      background: var(--night);
+      border-color: var(--night);
+    }
+
+    .btn-light {
+      color: var(--night);
+      background: var(--white);
+      border-color: var(--light-2);
+    }
+
+    .btn-outline {
+      color: var(--night);
+      background: transparent;
+      border-color: rgba(7, 22, 47, 0.22);
+    }
+
+    .section {
+      padding: 92px 0;
+      scroll-margin-top: 92px;
+    }
+
+    #beta,
+    #confidentialite,
+    #conditions {
+      scroll-margin-top: 96px;
+    }
+
+    .section-light {
+      background: var(--light);
+    }
+
+    .section-dark {
+      color: var(--white);
+      background: var(--night);
+    }
+
+    .section-kicker {
+      margin: 0 0 10px;
+      color: var(--coral);
+      font-size: 0.88rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      margin: 0;
+      color: var(--night);
+      font-size: 2.2rem;
+      line-height: 1.12;
+      font-weight: 800;
+    }
+
+    .section-dark .section-title,
+    .section-dark .section-copy {
+      color: var(--white);
+    }
+
+    .section-copy {
+      max-width: 700px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 1.06rem;
+    }
+
+    .section-head {
+      max-width: 760px;
+      margin-bottom: 38px;
+    }
+
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      border-radius: 32px;
+      box-shadow: 0 32px 70px rgba(0, 0, 0, 0.34);
+      transform: rotate(3deg);
+    }
+
+    .phone::before {
+      content: "";
+      position: absolute;
+      top: 9px;
+      left: 50%;
+      width: 92px;
+      height: 22px;
+      background: #07101f;
+      border-radius: 0 0 14px 14px;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+
+    .phone-screen {
+      min-height: 582px;
+      overflow: hidden;
+      background: var(--white);
+      border-radius: 22px;
+    }
+
+    .app-top {
+      padding: 30px 18px 20px;
+      color: var(--white);
+      background: var(--night-2);
+    }
+
+    .app-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .app-avatar {
+      width: 70px;
+      height: 70px;
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      background: var(--coral);
+      border: 4px solid rgba(255, 255, 255, 0.24);
+      border-radius: 50%;
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    .player-head {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .player-head h2 {
+      margin: 0;
+      font-size: 1.1rem;
+      line-height: 1.2;
+    }
+
+    .player-head p {
+      margin: 4px 0 0;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 0.78rem;
+      line-height: 1.35;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      padding: 6px 9px;
+      color: #062d23;
+      background: #bdf5e4;
+      border-radius: var(--radius);
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .status::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      background: var(--mint);
+      border-radius: 50%;
+    }
+
+    .app-content {
+      padding: 18px;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .mini-stat {
+      padding: 10px 8px;
+      background: var(--light);
+      border-radius: var(--radius);
+      text-align: center;
+    }
+
+    .mini-stat strong {
+      display: block;
+      color: var(--night);
+      font-size: 0.98rem;
+      line-height: 1.1;
+    }
+
+    .mini-stat span {
+      color: var(--muted);
+      font-size: 0.68rem;
+      font-weight: 700;
+    }
+
+
+    .split-panel.club {
+      background:
+        linear-gradient(rgba(7, 22, 47, 0.22), rgba(7, 22, 47, 0.5)),
+        url("https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1100&q=80");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .profile-stack {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: 24px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .profile-mini {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      color: var(--night);
+      background: rgba(255, 255, 255, 0.94);
+      border-radius: var(--radius);
+      box-shadow: 0 14px 28px rgba(7, 22, 47, 0.16);
+    }
+
+    .profile-dot {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      background: var(--coral);
+      border-radius: 50%;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .profile-mini strong,
+    .profile-mini span {
+      display: block;
+      line-height: 1.25;
+    }
+
+    .profile-mini span {
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .score {
+      color: var(--mint);
+      font-weight: 800;
+    }
+
+    .search-ui {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      top: 24px;
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: var(--radius);
+      box-shadow: 0 14px 28px rgba(7, 22, 47, 0.16);
+    }
+
+    .search-ui strong {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--night);
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .filter-chip {
+      padding: 10px;
+      color: #314157;
+      background: var(--light);
+      border: 1px solid var(--light-2);
+      border-radius: var(--radius);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    /* Features */
+    .features-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .feature-card {
+      padding: 24px;
+      background: var(--white);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--radius);
+    }
+
+    .feature-card .icon-box {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.18);
+      color: var(--white);
+    }
+
+    .section-dark .feature-card {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    .feature-card h3 {
+      margin: 0 0 8px;
+      color: var(--white);
+      font-size: 1.08rem;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    /* Numbers */
+    .numbers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 36px;
+    }
+
+    .number-card {
+      padding: 28px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-align: center;
+    }
+
+    .number-card strong {
+      display: block;
+      color: var(--night);
+      font-size: 2.15rem;
+      line-height: 1;
+      font-weight: 800;
+    }
+
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .field textarea {
+      min-height: 98px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 4px rgba(24, 87, 201, 0.12);
+    }
+
+    .form-status {
+      min-height: 24px;
+      margin: 0;
+      color: var(--mint);
+      font-weight: 800;
+    }
+
+    /* Footer */
+    .site-footer {
+      padding: 34px 0;
+      color: rgba(255, 255, 255, 0.72);
+      background: #050f20;
+    }
+
+    .site-footer .brand span:last-child {
+      color: var(--white);
+    }
+
+    .footer-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      font-weight: 700;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.82);
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+    }
+
+    .footer-note {
+      margin: 18px 0 0;
+      font-size: 0.9rem;
+    }
+
+    .legal-panel {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .legal-panel h2 {
+      margin: 0 0 8px;
+      color: var(--white);
+      font-size: 1rem;
+    }
+
+    .legal-panel p {
+      max-width: 860px;
+      margin: 0 0 16px;
+      font-size: 0.9rem;
+    }
+
+    /* Lightweight reveal animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 520ms ease, transform 520ms ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @media (max-width: 1020px) {
+      .hero .container,
+      .grid-2,
+      .problem-layout,
+      .cta-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 64px;
+      }
+
+      .hero h1 {
+        font-size: 3.15rem;
+      }
+
+      .hero-visual {
+        min-height: 600px;
+      }
+
+      .features-grid,
+      .pricing-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 820px) {
+      :root {
+        --header-height: 70px;
+      }
+
+      .container {
+        width: min(100% - 28px, 1120px);
+      }
+
+      .menu-toggle {
+        display: inline-flex;
+      }
+
+            <ul>
+              <li>Profil sportif complet</li>
+              <li>Ajout de vidéos highlights</li>
+              <li>Visibilité de base</li>
+            </ul>
+            <a class="btn btn-outline" href="#beta">Créer mon profil</a>
+          </article>
+
+          <article class="pricing-card featured reveal">
+            <span class="badge">Joueur</span>
+            <h3>Premium</h3>
+            <p class="price">À définir</p>
+            <ul>
+              <li>Profil mis en avant</li>
+              <li>Statistiques de visibilité</li>
+              <li>Priorité dans les recherches clubs</li>
+            </ul>
+            <a class="btn btn-primary" href="#beta">Rejoindre la liste</a>
+          </article>
+
+          <article class="pricing-card reveal">
+            <span class="badge">Club</span>
+            <h3>Club Premium</h3>
+            <p class="price">À définir</p>
+            <ul>
+              <li>Recherche avancée</li>
+              <li>Alertes recrutement</li>
+              <li>Contacts illimités</li>
+              <li>Accès aux profils disponibles</li>
+            </ul>
+            <a class="btn btn-dark" href="#beta">Tester côté club</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section final-cta" id="contact">
+      <div class="container cta-wrap">
+        <div class="reveal">
+          <p class="section-kicker">Bêta privée</p>
+          <h2 class="section-title">Prêt à rejoindre la nouvelle génération du recrutement handball ?</h2>
+          <p class="section-copy">Inscris-toi pour être recontacté lors de l'ouverture de la bêta HandLink et aider à façonner l'outil avec les premiers clubs et joueurs.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#beta">Rejoindre la bêta</a>
+          </div>
+        </div>
+
+        <form class="beta-form reveal" id="beta" aria-label="Formulaire de contact bêta">
+          <div class="form-row">
+            <div class="field">
+              <label for="name">Nom</label>
+              <input id="name" name="name" type="text" placeholder="Votre nom" required />
+            </div>
+            <div class="field">
+              <label for="role">Profil</label>
+              <select id="role" name="role" required>
+                <option value="">Sélectionner</option>
+                <option>Joueur ou joueuse</option>
+                <option>Entraîneur</option>
+                <option>Club</option>
+                <option>Partenaire</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="vous@exemple.fr" required />
+          </div>
+          <div class="field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Poste recherché, club, région ou besoin principal"></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit">Rejoindre la bêta</button>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-wrap">
+        <a class="brand" href="#top" aria-label="HandLink, retour en haut">
+          <span class="brand-mark">HL</span>
+          <span>HandLink</span>
+        </a>
+        <nav class="footer-links" aria-label="Liens de pied de page">
+          <a href="#confidentialite">Confidentialité</a>
+          <a href="#conditions">Conditions d'utilisation</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+      <p class="footer-note">Projet fictif réalisé dans le cadre d'un business game.</p>
+      <div class="legal-panel">
+        <section id="confidentialite">
+          <h2>Confidentialité</h2>
+          <p>Les coordonnées des utilisateurs sont présentées comme sécurisées dans ce prototype. Dans une version réelle, les échanges et données personnelles devraient respecter le RGPD.</p>
+        </section>
+        <section id="conditions">
+          <h2>Conditions d'utilisation</h2>
+          <p>Cette page est une démonstration de concept. Les offres, prix, fonctionnalités et chiffres devront être validés avant tout lancement commercial.</p>
+        </section>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Menu mobile accessible.
+    const menuButton = document.querySelector(".menu-toggle");
+    const navLinks = document.querySelectorAll(".nav-links a");
+
+    menuButton.addEventListener("click", () => {
+      const isOpen = document.body.classList.toggle("menu-open");
+      menuButton.setAttribute("aria-expanded", String(isOpen));
+      menuButton.setAttribute("aria-label", isOpen ? "Fermer le menu" : "Ouvrir le menu");
+    });
+
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        document.body.classList.remove("menu-open");
+        menuButton.setAttribute("aria-expanded", "false");
+        menuButton.setAttribute("aria-label", "Ouvrir le menu");
+      });
+    });
+
+    // Animations légères au scroll.
+    const revealElements = document.querySelectorAll(".reveal");
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.16 });
+
+      revealElements.forEach((element) => observer.observe(element));
+    } else {
+      revealElements.forEach((element) => element.classList.add("visible"));
+    }
+
+    // Simulation d'envoi pour rendre le formulaire cliquable sans backend.
+    const form = document.querySelector(".beta-form");
+    const status = document.querySelector("#form-status");
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      status.textContent = "Merci, votre demande bêta est prête à être transmise.";
+      form.reset();
+    });
+  </script>
+</body>
+</html>
